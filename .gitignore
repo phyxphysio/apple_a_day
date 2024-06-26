@@ -1,0 +1,4 @@
+.venv
+.env*
+to-do.txt
+*.pyc
