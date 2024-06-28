@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./api
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/api
+    command: >
+      sh -c " ruff check . && python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+      build:
+        context: ./apple-a-day-fe
+      volumes:
+        - ./apple-a-day-fe:/fe
+      ports:
+        - "3000:3000"
+      environment:
+        - CHOKIDAR_USEPOLLING=true
