@@ -20,6 +20,6 @@ from battery import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/energy-journal/$', views.energy_journal),
-    re_path(r'^api/energy-detail/[0-9]$', views.energy_detail),
+    re_path(r'^api/energy-journal/([0-9])$', views.energy_detail),
 
 ]

@@ -22,7 +22,7 @@ class EnergyJournal extends Component {
           {!energies || energies.length <= 0 ? (
             <tr>
               <td colSpan="5" align="center">
-                <b>Ops, no one here yet</b>
+                <b>Oops, no one here yet</b>
               </td>
             </tr>
           ) : (
