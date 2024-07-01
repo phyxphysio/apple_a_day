@@ -2,3 +2,4 @@
 .env*
 to-do.txt
 *.pyc
+**/__pycache__

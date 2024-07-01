@@ -9,7 +9,7 @@ COPY package.json /app/
 RUN npm install
 
 # Copy project files
-COPY . /app/
+COPY . /fe/
 
 # Expose port 3000
 EXPOSE 3000

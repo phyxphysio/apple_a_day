@@ -13,15 +13,18 @@ EXPOSE 8000
 ARG DEV=flase
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apt-get update && \
+    apt-get install -y libpq-dev python3-dev build-essential && \
     /py/bin/pip install --no-cache-dir -r /tmp/requirements.txt && \
     if [ "$DEV" = "true" ]; then \
-        /py/bin/pip install --no-cache-dir ruff; \
+    /py/bin/pip install --no-cache-dir ruff; \
     fi && \
+    apt-get autoremove && apt-get -y purge libpq-dev python3-dev build-essential && \ 
     rm -rf /tmp && \
     adduser \
-        --disabled-password \
-        --no-create-home \
-        django-user
+    --disabled-password \
+    --no-create-home \
+    django-user
 
 ENV PATH="/py/bin:$PATH"
 
