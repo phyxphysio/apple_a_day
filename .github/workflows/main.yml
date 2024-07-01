@@ -1,11 +1,10 @@
----
 name: CI
 
 on: [push]
 
 jobs:
-    test-lint:
-        name: Test and Lint
+    lint-test:
+        name: Lint and Test
         runs-on: ubuntu-latest
         steps:
             - name: Login to DockerHub
@@ -15,10 +14,11 @@ jobs:
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
             - name: Checkout
               uses: actions/checkout@v2
+            - name: Lint
+              run: docker-compose run --rm api sh -c "ruff check . --fix"
             - name: Test
               run: docker-compose run --rm api sh -c "python manage.py wait_for_db && python manage.py test"
-            - name: Lint
-              run: docker-compose run --rm api sh -c "ruff check ."
+            
 
 
 

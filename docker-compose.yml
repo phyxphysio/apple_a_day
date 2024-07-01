@@ -23,8 +23,7 @@ services:
     build:
       context: ./apple-a-day-fe
     volumes:
-      - ./fe:/fe
-      - /fe/node_modules
+      - ./apple-a-day-fe:/fe
     env_file:
       - .env.fe
     ports:

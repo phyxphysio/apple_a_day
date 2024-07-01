@@ -16,9 +16,6 @@ RUN python -m venv /py && \
     apt-get update && \
     apt-get install -y libpq-dev python3-dev build-essential && \
     /py/bin/pip install --no-cache-dir -r /tmp/requirements.txt && \
-    if [ "$DEV" = "true" ]; then \
-    /py/bin/pip install --no-cache-dir ruff; \
-    fi && \
     apt-get autoremove && apt-get -y purge libpq-dev python3-dev build-essential && \ 
     rm -rf /tmp && \
     adduser \

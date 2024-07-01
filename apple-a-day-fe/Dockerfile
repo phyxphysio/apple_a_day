@@ -1,15 +1,14 @@
 # Use the official Node.js image from the Docker Hub
 FROM node:latest
 
+# Copy project files
+COPY . /fe
+
 # Set working directory
-WORKDIR /app
+WORKDIR /fe
 
 # Install dependencies
-COPY package.json /app/
 RUN npm install
-
-# Copy project files
-COPY . /fe/
 
 # Expose port 3000
 EXPOSE 3000
