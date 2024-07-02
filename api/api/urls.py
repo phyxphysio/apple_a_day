@@ -14,4 +14,5 @@ urlpatterns = [
     path("api/user/", include("user.urls")),
     re_path(r"^api/energy-journal/$", views.energy_journal),
     re_path(r"^api/energy-journal/([0-9])$", views.energy_detail),
+    path("api/recipe/", include("recipe.urls")),
 ]

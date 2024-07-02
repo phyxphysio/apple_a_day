@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "battery",
     "drf_spectacular",
     "user",
+    "rest_framework.authtoken",
+    "recipe"
 ]
 
 MIDDLEWARE = [
@@ -143,4 +145,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "THEME": 'dark',
 }

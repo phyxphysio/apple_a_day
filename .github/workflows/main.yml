@@ -2,7 +2,8 @@ name: CI
 
 on: [push]
 
-env: ${{ secrets.SECRET_KEY }}
+env: 
+  ${{ secrets.SECRET_KEY }}
   ${{ secrets.DEV }}
   ${{ secrets.ALLOWED_HOSTS }}
   ${{ secrets.DB_PORT }}

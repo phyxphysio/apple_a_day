@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
 )
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -98,3 +99,21 @@ class Energy(models.Model):
         help_text="Enter a value from 1 (no stress) to 10 (extremely stressed)",
     )
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Recipe(models.Model):
+    """
+    Model to represent a recipe with user, title, description, time in minutes, and an optional link.
+
+    Returns:
+        str: The title of the recipe.
+    """
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    time_minutes = models.IntegerField()
+    link = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.title
