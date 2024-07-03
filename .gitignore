@@ -4,3 +4,4 @@ to-do.txt
 *.pyc
 **/__pycache__
 **/.ruff_cache
+bandit_report.html

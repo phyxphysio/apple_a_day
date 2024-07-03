@@ -5,7 +5,17 @@ services:
     build:
       context: ./api
       args:
-        - DEV=true
+        - SETUP_SCRIPT=setup.prod.sh
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DEV: ${DEV}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      DB_PORT: ${DB_PORT}
+      DB_PASS: ${DB_PASS}
+      DB_USER: ${DB_USER}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+
     ports:
       - "8000:8000"
     volumes:
@@ -22,8 +32,6 @@ services:
       context: ./apple-a-day-fe
     volumes:
       - ./apple-a-day-fe:/fe
-    env_file:
-      - .env.fe
     ports:
       - "3000:3000"
     environment:

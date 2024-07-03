@@ -1,1 +1,3 @@
 ruff
+factory-boy
+psycopg2-binary

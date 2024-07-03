@@ -5,7 +5,7 @@ services:
     build:
       context: ./api
       args:
-        - DEV=true
+        - SETUP_SCRIPT=setup.dev.sh
     ports:
       - "8000:8000"
     volumes:

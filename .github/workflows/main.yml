@@ -2,15 +2,16 @@ name: CI
 
 on: [push]
 
-env: 
-  ${{ secrets.SECRET_KEY }}
-  ${{ secrets.DEV }}
-  ${{ secrets.ALLOWED_HOSTS }}
-  ${{ secrets.DB_PORT }}
-  ${{ secrets.DB_PASS }}
-  ${{ secrets.DB_USER }}
-  ${{ secrets.DB_HOST }}
-  ${{ secrets.DB_NAME }}
+env:
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  DEV: ${{ secrets.DEV }}
+  ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_PASS: ${{ secrets.DB_PASS }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+
 
 jobs:
   lint-test:
