@@ -4,7 +4,6 @@ from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APIClient
-
 from battery.models import Recipe
 from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
 import factory
@@ -15,6 +14,7 @@ RECIPE_URL = reverse("recipe:recipe-list")
 class RecipeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Recipe
+
     title = factory.Sequence(lambda n: f"Recipe {n}")
     description = factory.Faker("sentence")
     time_minutes = factory.Faker("random_int", min=1, max=120)
@@ -32,6 +32,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 def detail_url(recipe_id):
     """Return recipe detail URL."""
     return reverse("recipe:recipe-detail", args=[recipe_id])
+
 
 class PublicRecipeAPITests(TestCase):
     """Test the public recipe API."""
@@ -62,10 +63,9 @@ class PrivateRecipeAPITests(TestCase):
     def create_recipe(self, **params):
         """Create and return a new recipe."""
         defaults = factory.build(dict, FACTORY_CLASS=RecipeFactory) | params
-        if 'user' not in defaults:
-            defaults['user'] = self.user
+        if "user" not in defaults:
+            defaults["user"] = self.user
         return Recipe.objects.create(**defaults)
-
 
     def create_user(self, **params):
         """Create and return a new user."""
@@ -86,7 +86,6 @@ class PrivateRecipeAPITests(TestCase):
         """Test creating a recipe."""
         payload = factory.build(dict, FACTORY_CLASS=RecipeFactory)
         res = self.client.post(RECIPE_URL, payload)
-        print(res.data)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipe = Recipe.objects.get(id=res.data["id"])
         # sourcery skip: no-loop-in-tests
@@ -131,4 +130,50 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(recipe.title, payload["title"])
         self.assertEqual(recipe.link, original_link)
         self.assertEqual(recipe.user, self.user)
-        self.assertEqual(1,2)
+
+    def test_full_update(self):
+        """Test full update of a recipe."""
+        recipe = self.create_recipe()
+
+        payload = factory.build(dict, FACTORY_CLASS=RecipeFactory)
+        url = detail_url(recipe.id)
+        res = self.client.put(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db()
+        for k, v in payload.items():
+            self.assertEqual(getattr(recipe, k), v)
+        self.assertEqual(recipe.user, self.user)
+    
+    def test_update_user_returns_error(self):
+        """Test changing the recipe user results in an error."""
+        new_user = self.create_user()
+        recipe = self.create_recipe()
+
+        payload = {"user": new_user.id}
+        url = detail_url(recipe.id)
+        self.client.patch(url, payload)
+
+        recipe.refresh_from_db()
+        self.assertEqual(recipe.user, self.user)
+    
+    def test_delete_recipe(self):
+        """Test deleting a recipe successful."""
+        recipe = self.create_recipe()
+
+        url = detail_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
+    
+    def test_delete_other_users_recipe_error(self):
+        """Test trying to delete another user's recipe results in an error."""
+        new_user = self.create_user()
+        recipe = self.create_recipe(user=new_user)
+
+        url = detail_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())

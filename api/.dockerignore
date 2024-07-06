@@ -6,12 +6,8 @@
 .docker
 
 #Python
-**/__pycache__/
-*/*/*/__pycache__/
-*/*/__pycache__/
+**/__pycache__
 **/.ruff_cache
-*/*/*/.ruff_cache
-*/*/.ruff_cache
 *venv/
 
 .DS_Store

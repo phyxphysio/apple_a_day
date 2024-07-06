@@ -3,8 +3,15 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from battery import models
+import factory
+
+from recipe.tests.test_recipe_api import UserFactory
+def create_user(self):
+        defaults = factory.build(dict, FACTORY_CLASS=UserFactory)
+        return get_user_model().objects.create(**defaults)
 
 class ModelTests(TestCase):
+    
     def test_create_user_with_email_successful(self):
         """Test creating a new user with an email is successful"""
         email = "test@example.com"
@@ -49,3 +56,12 @@ class ModelTests(TestCase):
             description="Sample recipe description",
         )
         self.assertEqual(str(recipe), recipe.title)
+
+    def test_create_tag(self):
+        """ Test creating a tag."""
+        user = create_user()
+        tag = models.Tag.objects.create(
+            user=user,
+            name="Vegan",
+        )
+        self.assertEqual(str(tag), tag.name)
