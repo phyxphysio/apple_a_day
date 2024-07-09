@@ -6,7 +6,7 @@ from battery import models
 import factory
 
 from recipe.tests.test_recipe_api import UserFactory
-def create_user(self):
+def create_user():
         defaults = factory.build(dict, FACTORY_CLASS=UserFactory)
         return get_user_model().objects.create(**defaults)
 
@@ -65,3 +65,12 @@ class ModelTests(TestCase):
             name="Vegan",
         )
         self.assertEqual(str(tag), tag.name)
+
+    def test_create_ingredient(self):
+        """ Test creating an ingredient."""
+        user = create_user()
+        ingredient = models.Ingredient.objects.create(
+            user=user,
+            name="Cucumber",
+        )
+        self.assertEqual(str(ingredient), ingredient.name)
